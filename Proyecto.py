@@ -41,10 +41,16 @@ def get_mosaico(fecha_inicio, fecha_fin):
 
 
 # Mosaico de 2018
-mosaico_t1 = get_mosaico("2018-01-01", "2018-12-31")
+mosaico_t1 = get_mosaico(
+    "2018-01-01",
+    "2018-12-31",
+)
 
 # Mosaico de 2023
-mosaico_t2 = get_mosaico("2023-01-01", "2023-12-31")
+mosaico_t2 = get_mosaico(
+    "2023-01-01",
+    "2023-12-31",
+)
 
 print("Mosaicos Sentinel-2 cargados correctamente.")
 
@@ -52,7 +58,10 @@ print("Mosaicos Sentinel-2 cargados correctamente.")
 # 4. CLASIFICACION DE COBERTURA TERRESTRE (RS-2)
 # ==========================================
 
-clasificaciones = clasificar_mosaicos_temporales(mosaico_t1, mosaico_t2)
+clasificaciones = clasificar_mosaicos_temporales(
+    mosaico_t1,
+    mosaico_t2,
+)
 
 mapa_cobertura_t1 = clasificaciones["clasificacion_t1"]
 mapa_cobertura_t2 = clasificaciones["clasificacion_t2"]
@@ -69,7 +78,10 @@ def detectar_cambios(mapa_t1, mapa_t2):
     return mapa_t2.subtract(mapa_t1)
 
 
-cambios = detectar_cambios(mapa_cobertura_t1, mapa_cobertura_t2)
+cambios = detectar_cambios(
+    mapa_cobertura_t1,
+    mapa_cobertura_t2,
+)
 
 print("Comparacion temporal realizada.")
 
@@ -81,20 +93,37 @@ Map = geemap.Map(center=[-15.84, -70.01], zoom=11)
 
 Map.addLayer(
     mosaico_t1,
-    {"bands": ["B4", "B3", "B2"], "min": 0, "max": 3000},
+    {
+        "bands": ["B4", "B3", "B2"],
+        "min": 0,
+        "max": 3000,
+    },
     "Sentinel 2018",
 )
 
 Map.addLayer(
     mosaico_t2,
-    {"bands": ["B4", "B3", "B2"], "min": 0, "max": 3000},
+    {
+        "bands": ["B4", "B3", "B2"],
+        "min": 0,
+        "max": 3000,
+    },
     "Sentinel 2023",
 )
 
 parametros_cobertura = obtener_parametros_visualizacion()
 
-Map.addLayer(mapa_cobertura_t1, parametros_cobertura, "Cobertura terrestre 2018")
-Map.addLayer(mapa_cobertura_t2, parametros_cobertura, "Cobertura terrestre 2023")
+Map.addLayer(
+    mapa_cobertura_t1,
+    parametros_cobertura,
+    "Cobertura terrestre 2018",
+)
+
+Map.addLayer(
+    mapa_cobertura_t2,
+    parametros_cobertura,
+    "Cobertura terrestre 2023",
+)
 
 Map.addLayer(
     cambios,
